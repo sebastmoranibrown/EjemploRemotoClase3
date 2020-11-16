@@ -1,0 +1,138 @@
+git config [--options] user.name = "su_nombre"
+
+git config [--options] user.email = "nombre@gmail.com"
+
+--options (gitconfig)
+
+-system: representa los valores para todos los usuarios del sistema y 
+	todos sus repositorios
+
+--global: especifico de un usuario
+
+--local: archivo de config en el directorio git
+
+ejemplo
+
+git config --global user.name "su_nombre"
+
+git config --global user.email "nombre@gmail.com"
+
+--------inicilizacion de repositorio---------------
+
+CASO 1: a partir de repositorio en algun gestor remoto (github, gitlab, etc) --> CLONAR
+
+$ git clone url_repo_remoto
+
+// al clonar se descarga toda la informacion, y se crea una carpeta oculta .git que contiene
+// los archivos necesarios para hacer todo el seguimiento de cambios
+
+
+CASO 2: ya existe una carpeta en mi maquina local
+
+$ git init
+
+
+-------comandos para trabajar con los fuentes--------------
+
+$ git status: no mostrababa el estado de los fuentes en el directorio mapeado con Git
+
+$ git add nombre_archivo: nos pasa el archivo referenciado al area de stage y que quedara disponible para hacerle commit.
+$ git add . : se pasaban los archivos al area stage
+
+$ git commit: aqui pasabamos al area history disponible para pushear esos cambios al repositorio remoto. se nos abre un cliente
+		editor para describir que contiene ese commit
+$ git commit -m DESCRIPCION: version corta
+
+$ git diff :nos mostraba diferencia de los fuentes parapasar a stage con lo que esta ya en el repo
+
+$ git show SHA-1: podemos ver los cambios de un commit en particular
+
+
+-------MANEJO DE RAMAS---------------
+
+-Una rama es simplemente un puntero movil que señala a un commit
+- la rama por defecto de Git es master
+
+$ git branch nombre_rama : creacion de rama
+$ git branch -m nuevo_nombre: renombra la rama en la cual estamos trabajando
+$ git branch : obtenemos el listado de ramas locales
+$ git branch -a: obtenemos el listado de ramas locales y remotas
+$ git checkout NOMBRE_RAMA: nos movemos a la rama que describimos
+
+$ git checkout -b nombre_rama: crea la rama y nos mueve directamente a ella.
+
+$ git branch -d nombre_rama: elimina la rama
+
+-----MERGE (FUSION)--------------
+
+Como unimos lo que hicimos en otras ramas a la rama principal
+
+1. creamos una rama basada en otra				- git checkout -b rama
+2. trabajamos en la nueva rama					- git status - git add .
+3- Guardar los cambios (commit)					- git commit -m "descripcion del cambio"
+4- Nos ubicamos en la rama donde queremos que los cambios 	- git checkout master
+se mezclen
+
+5- Fuisionamos los cambios					- git merge rama
+6- Podemos eliminar la rama ya mergeada				- git branch -d rama
+
+
+ESCENARIOS DE MERGE
+
+A- CASOS DONDE NO HAY CONFLICTO
+
+Merge "fast-forward" (avance rapido)				$ git merge rama
+
+- si no se realizo ningun commit en master mientras hacia un commit en la rama
+- entonces simplemente se cambia el puntero de la rama master
+
+Merge "no fast-forward"						$ git merge --no-ff rama
+- para crear un nuevo commit
+
+
+Merge ("3-way")(a tres bandas)
+
+-si master sufre cambios despues de haber creado la rama nueva, por ej. se crean nuevos archivos
+- git realiza un merge a 3 bandas 
+
+
+Que pasa cuando hay un conflicto?
+
+- ocurre un conflicto cuando se modifican las mismas lineas de codigo tanto en la rama original como en la nueva
+  rama creada.
+
+- Git avisa que se debe resolver el conflicto.
+- Vamos a tener que elegir con qué quedamos
+
+<<<<<<<<<<<<<HEAD (CONTENIDO) ============ indica el contenido que se cambio en donde hacemos el merge (master)
+============(contenido 2) >>>>>>>>>>>>>>>> indica el contenido de lo que se cambio en la nueva rama.
+
+-Resolver los conflictos implica:
+	1- Eliminar las etiquetas <<<<<<<<<<<<<HEAD (CONTENIDO) ============
+	2- Dejar el contenido de la original o
+	3- Dejar el contenido de la rama nueva o
+	4- Dejar ambos contenidos o
+	5- Modificar lo necesario y crear un nuevo contenido
+
+-Se guarda el archivo y se termina el merge (agregando a staging y haciendo un commit)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
